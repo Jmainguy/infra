@@ -1,0 +1,12 @@
+---
+
+- name: Ensure dir exists for mysqldump
+  file:
+    state: directory
+    path: "/mnt/backup/mysqldumps/"
+
+- name: Dump all databases
+  mysql_db:
+    state: dump
+    name: all
+    target: "/mnt/backup/mysqldumps/{{ inventory_hostname }}.{{ ansible_date_time.weekday }}.sql.bz2"
