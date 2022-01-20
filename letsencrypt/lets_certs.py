@@ -7,6 +7,7 @@ import os
 
 parser = argparse.ArgumentParser(description='Update ssl certs with Lets Encrypt as needed')
 parser.add_argument('domain', help='domain to update')
+parser.add_argument('certbotdir', help='directory for certbot')
 args = parser.parse_args()
 domain = args.domain
 
@@ -18,7 +19,7 @@ def bash(cmd):
 
 # Run check_ssl.py
 
-cmd = '/etc/ssl/private/letsencrypt/check_ssl.py %s' % domain
+cmd = '/opt/infra/letsencrypt/check_ssl.py %s' % domain
 stdout, stderr, rc = bash(cmd)
 if rc == 2:
     print stdout
@@ -30,35 +31,23 @@ elif rc == 0:
 # Bak working haproxy.cfg
 cmd = 'bak -f /etc/haproxy/haproxy.cfg'
 bash(cmd)
-cmd = 'cp /etc/ssl/private/letsencrypt/haproxy.cfg /etc/haproxy/haproxy.cfg'
+cmd = 'cp %s/haproxy.cfg /etc/haproxy/haproxy.cfg' % certbotdir
 bash(cmd)
 cmd = 'systemctl restart haproxy'
 bash(cmd)
 
 # Create certs
-domain_len = domain.split('.')
-if len(domain_len) == 2:
-    cmd = 'ssh le.soh.re "/usr/src/letsencrypt/letsencrypt-auto --text --email jon@soh.re --domains %s,www.%s --agree-tos --webroot -w /var/www/html certonly"' % (domain, domain)
-elif len(domain_len) >= 3:
-    cmd = 'ssh le.soh.re "/usr/src/letsencrypt/letsencrypt-auto --text --email jon@soh.re --domains %s --agree-tos --webroot -w /var/www/html certonly"' % domain
+cmd = '%s/run.sh %s' % (certbotdir, domain)
 stdout, stderr, rc = bash(cmd)
 print rc
 print stdout
 
 # Copy certs to haproxy location
-dir = '/etc/ssl/private/letsencrypt/' + domain
-if not os.path.isdir(dir):
-    os.makedirs(dir)
+dir = '%s/etc/letsencrypt/live/%s' % (certbotdir, domain)
+cmd = 'cat %s/fullchain.pem %s/privkey.pem > %s/certs/%s.pem' % (dir, dir, domain, certbotdir)
+bash(cmd)
 
-# scp certs from vm to host
-cmd = 'scp root@le.soh.re:/etc/letsencrypt/live/%s/* %s/' % (domain, dir)
-bash(cmd)
-cmd = 'cat %s/fullchain.pem > %s/%s.pem' % (dir, dir, domain)
-bash(cmd)
-cmd = 'cat %s/privkey.pem >> %s/%s.pem' % (dir, dir, domain)
-bash(cmd)
-cmd = 'cp %s/%s.pem /etc/ssl/private/' % (dir, domain)
-bash(cmd)
+# restore haproxy
 cmd = 'unbak /etc/haproxy/haproxy.cfg.bak'
 bash(cmd)
 cmd = 'systemctl restart haproxy'
