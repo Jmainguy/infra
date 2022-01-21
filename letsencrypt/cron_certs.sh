@@ -13,8 +13,11 @@ space ()
     echo ""
 }
 # Bak up /etc/hosts so we can check the real connection
+bak -f /etc/hosts
+cp ${CERTBOTDIR}/fake_hosts /etc/hosts
 for DOMAIN in $(cat ${CERTBOTDIR}/hostnames); do
     echo ${DOMAIN}
-    ${INFRADIR}/letsencrypt/lets_certs.py ${DOMAIN} ${CERTBOTDIR}
+    ${INFRADIR}/letsencrypt/lets_certs.py ${DOMAIN} ${CERTBOTDIR} ${INFRADIR}
     space
 done
+unbak /etc/hosts.bak
