@@ -31,28 +31,26 @@ elif rc == 0:
     print stdout
     print "Cert does not need an udate"
     sys.exit(0)
-# Bak working haproxy.cfg
-print  "Trying to update cert"
-cmd = 'bak -f /etc/haproxy/haproxy.cfg'
-bash(cmd)
-cmd = 'cp %s/haproxy.cfg /etc/haproxy/haproxy.cfg' % certbotdir
-bash(cmd)
-cmd = 'systemctl restart haproxy'
-bash(cmd)
 
 # Create certs
 cmd = '%s/run.sh %s' % (certbotdir, domain)
 stdout, stderr, rc = bash(cmd)
-print rc
-print stdout
+if rc != 0:
+    print rc
+    print stdout
+    print stderr
+else:
+    print stdout
 
 # Copy certs to haproxy location
 dir = '%s/etc/letsencrypt/live/%s' % (certbotdir, domain)
-cmd = 'cat %s/fullchain.pem %s/privkey.pem > %s/certs/%s.pem' % (dir, dir, certbotdir, domain)
+cmd = '/usr/bin/cat %s/fullchain.pem %s/privkey.pem > %s/certs/%s.pem' % (dir, dir, certbotdir, domain)
 bash(cmd)
 
-# restore haproxy
-cmd = 'unbak /etc/haproxy/haproxy.cfg.bak'
-bash(cmd)
-cmd = 'systemctl restart haproxy'
+# check if cert is empty 
+pem_path = '%s/certs/%s.pem' % (certbotdir, domain)
+if os.stat(pem_path).st_size == 0:
+  os.remove(pem_path)
+
+cmd = '/usr/bin/systemctl restart haproxy'
 bash(cmd)

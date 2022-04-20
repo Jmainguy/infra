@@ -1,0 +1,17 @@
+---
+
+- name: Install bible
+  package:
+    name: https://github.com/Jmainguy/bible/releases/download/v0.3.0/bible-0.3.0-1.x86_64.rpm
+    state: present
+    disable_gpg_check: true
+
+- name: Add common bashrc
+  copy:
+    src: bashrc
+    dest: /root/.bashrc
+
+- name: Add common bashrc
+  copy:
+    src: login-motd.sh
+    dest: /etc/profile.d/login-motd.sh
