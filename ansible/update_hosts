@@ -1,7 +1,8 @@
 phy01.standouthost.com
 ns1.vpsaddict.com
-ns2.vpsaddict.com
 ns3.vpsaddict.com
-# VM's hosted on this machine below
-soh.re
-# add oracle vms
+vm1.soh.re
+vm2.soh.re
+10.0.0.3
+10.0.0.4
+10.0.0.7

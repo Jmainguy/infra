@@ -1,6 +1,11 @@
 ---
 
+- name: Update package cache
+  ansible.builtin.package:
+    update_cache: true
+
 - name: Update all packages
-  package:
+  ansible.builtin.package:
     name: '*'
     state: latest
+    use: auto
