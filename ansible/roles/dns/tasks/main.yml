@@ -1,0 +1,26 @@
+---
+- name: Ensure /etc/nsd directory exists
+  ansible.builtin.file:
+    path: /etc/nsd
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy NSD configuration files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/etc/nsd/{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - jmainguy.com
+    - nsd.conf
+    - rightwaypropertycare.com
+    - soh.re
+    - southridingagent.com
+    - southridingagents.com
+    - standouthost.com
+    - vpsaddict.com
+  notify: Restart nsd

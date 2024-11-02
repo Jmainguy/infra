@@ -1,0 +1,31 @@
+" .vimrc
+
+" Disable mouse mode
+set mouse=
+
+" Enable syntax highlighting
+syntax on
+
+" Set a nice color scheme
+colorscheme desert
+
+" Highlight current line
+set cursorline
+
+" Enable 256 colors
+set t_Co=256
+
+" Set tabs and indentation
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+" Enable line wrapping
+set wrap
+
+" Show matching brackets
+set showmatch
+
+" Set a more informative status line
+set laststatus=2
+set statusline=%F%m%r%h%w\ [%{&ff}]\ [POS=%l,%v][%p%%]\ [LEN=%L]

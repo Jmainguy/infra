@@ -1,0 +1,15 @@
+- name: Copy .bashrc to root's home directory
+  ansible.builtin.copy:
+    src: files/bashrc
+    dest: /root/.bashrc
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy .vimrc to root's home directory
+  ansible.builtin.copy:
+    src: files/vimrc
+    dest: /root/.vimrc
+    owner: root
+    group: root
+    mode: '0644'

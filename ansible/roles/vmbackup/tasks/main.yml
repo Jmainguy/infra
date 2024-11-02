@@ -1,4 +1,0 @@
----
-
-- name: Backup libvirt vms
-  script: blockcopy.sh all

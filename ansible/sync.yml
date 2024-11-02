@@ -1,6 +1,0 @@
----
-- name: Sync data from phy01 to local
-  hosts: phy01.standouthost.com
-  gather_facts: true
-  roles:
-    - sync

@@ -1,6 +1,0 @@
----
-- name: Install common tools
-  hosts: all
-  gather_facts: true
-  roles:
-    - installPackages

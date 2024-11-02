@@ -1,0 +1,33 @@
+---
+- name: Set timezone to Eastern
+  ansible.builtin.command:
+    cmd: timedatectl set-timezone America/New_York
+  when: ansible_date_time.tz not in ['EST', 'EDT']
+
+- name: Install cron package
+  ansible.builtin.package:
+    name: cron
+    state: present
+
+- name: Ensure cron service is running and enabled
+  ansible.builtin.service:
+    name: cron
+    state: started
+    enabled: true
+
+- name: Create cron job for daily reboot at 1 AM Eastern
+  ansible.builtin.cron:
+    name: "Daily reboot"
+    minute: "0"
+    hour: "1"
+    job: "/sbin/reboot"
+
+- name: Determine architecture
+  ansible.builtin.set_fact:
+    package_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
+
+- name: Install soh-router package
+  ansible.builtin.apt:
+    deb: "https://github.com/Jmainguy/soh-router/releases/download/v{{ soh_router_version }}/soh-router_{{ soh_router_version }}-1_{{ package_arch }}.deb"
+    state: present
+    allow_unauthenticated: true

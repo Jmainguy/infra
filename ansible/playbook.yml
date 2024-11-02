@@ -1,0 +1,22 @@
+---
+
+- name: sohre hosts
+  hosts: ns1.vpsaddict.com, homelab.soh.re, ns3.vpsaddict.com
+  gather_facts: true
+  roles:
+    - dns
+
+- name: Playbook
+  hosts: all
+  gather_facts: true
+  roles:
+    - update
+    - common
+  
+- name: sohre hosts
+  hosts: vm1.soh.re, vm2.soh.re
+  gather_facts: true
+  vars:
+    soh_router_version: "1.0.11"
+  roles:
+    - sohre

@@ -1,7 +1,0 @@
----
-- name: Backup mysql and vms
-  hosts: phy01.standouthost.com
-  gather_facts: true
-  roles:
-    - mysqldump
-    - vmbackup

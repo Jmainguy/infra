@@ -1,0 +1,5 @@
+---
+- name: Restart nsd
+  ansible.builtin.service:
+    name: nsd
+    state: restarted
