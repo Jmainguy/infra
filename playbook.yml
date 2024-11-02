@@ -1,7 +1,7 @@
 ---
 
 - name: sohre hosts
-  hosts: ns1.vpsaddict.com, homelab.soh.re, ns3.vpsaddict.com
+  hosts: dns
   gather_facts: true
   roles:
     - dns
@@ -14,7 +14,7 @@
     - common
   
 - name: sohre hosts
-  hosts: vm1.soh.re, vm2.soh.re
+  hosts: sohre
   gather_facts: true
   vars:
     soh_router_version: "1.0.11"
