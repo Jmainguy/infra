@@ -13,3 +13,10 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: Install a list of packages
+  apt:
+    name:
+      - vim
+      - htop
+    state: present

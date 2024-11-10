@@ -15,11 +15,11 @@
     state: started
     enabled: true
 
-- name: Create cron job for daily reboot at 1 AM Eastern
+- name: Create cron job for reboot every 4 hours
   ansible.builtin.cron:
-    name: "Daily reboot"
+    name: "Reboot every 4 hours"
     minute: "0"
-    hour: "1"
+    hour: "*/4"
     job: "/sbin/reboot"
 
 - name: Determine architecture
