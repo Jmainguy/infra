@@ -1,0 +1,10 @@
+- name: Install packages for k3s boxes
+  apt:
+    name:
+      - sudo
+      - wireguard
+      - curl
+      - open-iscsi
+      - nfs-common
+      - cryptsetup
+    state: present

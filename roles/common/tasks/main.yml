@@ -19,4 +19,5 @@
     name:
       - vim
       - htop
+      - curl
     state: present

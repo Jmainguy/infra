@@ -6,7 +6,13 @@
   roles:
     - dns
 
-- name: Playbook
+- name: k3s hosts
+  hosts: k3s
+  gather_facts: true
+  roles:
+    - k3s
+
+- name: everyone
   hosts: all
   gather_facts: true
   roles:

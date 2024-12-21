@@ -2,6 +2,7 @@
 dns
 sohre
 common
+k3s
 
 [dns]
 ns1.vpsaddict.com
@@ -11,9 +12,14 @@ ns3.vpsaddict.com
 [sohre]
 vm1.soh.re
 vm2.soh.re
+vm3.soh.re
+vm4.soh.re
+
+[k3s]
+lenovo-laptop
+black-intel
+white-intel
+k3s.soh.re
 
 [common]
 piaware
-10.0.0.4
-lenovo-laptop
-black-intel

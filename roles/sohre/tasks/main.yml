@@ -9,6 +9,17 @@
     name: cron
     state: present
 
+- name: Install podman package
+  ansible.builtin.package:
+    name: podman
+    state: present
+
+- name: Symlink Docker to Podman
+  file:
+    src: /usr/bin/podman
+    dest: /usr/bin/docker
+    state: link
+
 - name: Ensure cron service is running and enabled
   ansible.builtin.service:
     name: cron
@@ -18,6 +29,12 @@
 - name: Create cron job for reboot every 4 hours
   ansible.builtin.cron:
     name: "Reboot every 4 hours"
+    special_time: reboot
+    job: "/usr/bin/docker rm $(/usr/bin/docker ps -qa)"
+
+- name: Create cron job for reboot every 4 hours
+  ansible.builtin.cron:
+    name: "delete stale dockers on reboot"
     minute: "0"
     hour: "*/4"
     job: "/sbin/reboot"
@@ -31,3 +48,9 @@
     deb: "https://github.com/Jmainguy/soh-router/releases/download/v{{ soh_router_version }}/soh-router_{{ soh_router_version }}-1_{{ package_arch }}.deb"
     state: present
     allow_unauthenticated: true
+
+- name: Ensure soh-router service is running and enabled
+  ansible.builtin.service:
+    name: soh-router
+    state: started
+    enabled: true
